@@ -44,21 +44,28 @@ void setup() {
 
 void loop() {
   if (btSerial.available()) {
-    String command = btSerial.readStringUntil(';');     //Essayer lecture lettre par lettre + mettre tempo de 2ms après la lecture
+    String command = btSerial.readStringUntil(';');     // Essayer lecture lettre par lettre + mettre tempo de 2ms après la lecture
     //command.trim(); // Remove any trailing newline characters
     Serial.println("Received command: " + command); // Print the received command for debugging
     
-    // if (command == "Avance") {
-    //   moveForward();
-    // } else if (command == "Recule") {
-    //   moveBackward();
-    // } else if (command == "Gauche") {
-    //   turnLeft();
-    // } else if (command == "Droite") {
-    //   turnRight();
-    // } else if (command == "Stop") {
-    //   stopMovement();
-    // }
+    if (command == "AVANCER") {
+      moveForward();
+      btSerial.println("OK"); // Send OK if command is correct
+    } else if (command == "RECULER") {
+      moveBackward();
+      btSerial.println("OK"); // Send OK if command is correct
+    } else if (command == "A_GAUCHE") {
+      turnLeft();
+      btSerial.println("OK"); // Send OK if command is correct
+    } else if (command == "A_DROITE") {
+      turnRight();
+      btSerial.println("OK"); // Send OK if command is correct
+    } else if (command == "STOP") {
+      stopMovement();
+      btSerial.println("OK"); // Send OK if command is correct
+    } else {
+      btSerial.println("NOK"); // Send NOK if command is incorrect
+    }
   }
 }
 
@@ -71,7 +78,6 @@ void moveForward() {
   analogWrite(PWMB, Speed);
   setLEDColor(0x00FF00); // Green for forward
 }
-
 
 void turnLeft() {
   digitalWrite(AIN1, HIGH);
